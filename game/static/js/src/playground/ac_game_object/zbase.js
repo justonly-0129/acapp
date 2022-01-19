@@ -32,8 +32,8 @@ class AcGameObject {
 
 let last_timestamp;
 let AC_GAME_ANIMATION = function(timestamp) {
-	for(let i = 0; i < AC_GAAME_OBJECTS.length; i++) {
-		let obj = AC_GAME_OBJECT[i];
+	for(let i = 0; i < AC_GAME_OBJECTS.length; i++) {
+		let obj = AC_GAME_OBJECTS[i];
 		if (!obj.has_called_start) {
 			obj.start();
 			obj.has_called_start = true;
