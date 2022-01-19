@@ -259,7 +259,7 @@ class player extends AcGameObject {
 		this.radius -= damage;
 		if (this.radius < 10) {
 			this.destroy();
-			retrun false;
+			return false;
 		}
 
 		this.damage_x = Math.cos(angle);
