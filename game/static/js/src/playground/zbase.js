@@ -10,7 +10,7 @@ class AcGamePlayground {
 	}
 
 	get_random_color() {
-		let colors = ["blue","brown","purple","light blue", "red", "pink", "grey","light brown", "green","bright red","bright green"];
+		let colors = ["blue","purple", "red", "pink", "green"];
 		return colors[Math.floor(Math.random() * 7)];
 	}
 

@@ -282,7 +282,7 @@ class Player extends AcGameObject {
 
     update() {
         this.spent_time += this.timedelta / 1000;
-        if (!this.is_me && this.spent_time > 8 && Math.random() < 1 / 300.0) {
+        if (!this.is_me && this.spent_time > 5 && Math.random() < 1 / 300.0) {
             let player = this.playground.players[Math.floor(Math.random() * this.playground.players.length)];
             let tx = player.x + player.speed * this.vx * this.timedelta / 1000 * 0.3;
             let ty = player.y + player.speed * this.vy * this.timedelta / 1000 * 0.3;
@@ -420,7 +420,7 @@ class AcGamePlayground {
 	}
 
 	get_random_color() {
-		let colors = ["blue","brown","purple","light blue", "red", "pink", "grey","light brown", "green","bright red","bright green"];
+		let colors = ["blue","purple", "red", "pink", "green"];
 		return colors[Math.floor(Math.random() * 7)];
 	}
 
@@ -560,8 +560,12 @@ class Settings {
 	}
 
 	start() {
-		this.getinfo();
-		this.add_listening_events();
+		if (this.platform === "ACAPP") {
+			this.getinfo_acapp();
+		} else {
+			this.getinfo_web();
+			this.add_listening_events();
+		}
 	}
 
 	add_listening_events() {
@@ -684,10 +688,37 @@ class Settings {
 		this.$register.hide();
 		this.$login.show();
 	}
+	
+	acapp_login(appid, redirect_uri, scope, state) {
+		let outer = this;
 
+		this.root.AcWingOS.api.oauth2.authorize(appid, redirect_uri, scope, state, function(resp) {
+			console.log("called from acapp_login function");
+			console.log(resp);
+			if (resp.result === "success") {
+				outer.username = resp.username;
+				outer.photo = resp.photo;
+				outer.hide();
+				outer.root.menu.show();
+			}
+		});
+	}
 
+	getinfo_acapp() {
+		let outer = this;
 
-	getinfo() {
+		$.ajax({
+			url: "https://app1249.acapp.acwing.com.cn/settings/acwing/acapp/apply_code/",
+			type: "GET",
+			success: function(resp) {
+				if (resp.result === "success") {
+						outer.acapp_login(resp.appid, resp.redirect_uri, resp.scope, resp.state);
+				}			
+			}
+		});
+	}
+
+	getinfo_web() {
 		let outer = this;
 		$.ajax({
 			url: "https://app1249.acapp.acwing.com.cn/settings/getinfo/",
