@@ -67,7 +67,7 @@ class Player extends AcGameObject {
         });
         this.playground.game_map.$canvas.mousedown(function(e) {
 			if (outer.playground.state !== "fighting")
-				return false;
+				return true;
 
             const rect = outer.ctx.canvas.getBoundingClientRect();
             if (e.which === 3) {
@@ -106,7 +106,18 @@ class Player extends AcGameObject {
             }
         });
 
-        $(window).keydown(function(e) {
+        this.playground.game_map.$canvas.keydown(function(e) {
+			// console.log(e.which); 
+			if (e.which === 13) { // enter
+				if (outer.playground.mode === "multi mode") { //打开聊天框
+					outer.playground.chat_field.show_input();
+				}
+
+			} else if (e.which === 27) { // esc
+				if (outer.playground.mode === "multi mode") { //关闭聊天框
+					outer.playground.chat_field.hide_input();
+				}
+			}
 			if (outer.playground.state !== "fighting")
 				return true;	
 
@@ -294,7 +305,7 @@ class Player extends AcGameObject {
 		if (this.fireball_coldtime > 0) {
 			this.ctx.beginPath();
 			this.ctx.moveTo(x * scale, y * scale);
-			this.ctx.arc(x * scale, y * scale, r * scale, 0 - Math.PI / 2, Math.PI * 2 * (1 - this.fireball_coldtime / 3) - Math.PI / 2, false);
+			this.ctx.arc(x * scale, y * scale, r * scale, 0 - Math.PI / 2, Math.PI * 2 * (1 - this.fireball_coldtime / 3) - Math.PI / 2, true);
 			this.ctx.lineTo(x * scale, y * scale);
 			this.ctx.fillStyle = "rgba(0, 0, 255, 0.6)";
 			this.ctx.fill();
