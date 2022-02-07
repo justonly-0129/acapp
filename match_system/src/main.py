@@ -36,8 +36,7 @@ class Pool:
 	def __init__(self):
 		self.players = []
 
-	def add_player(self, player):
-		print("Add_Player: %s %d" % (player.username, player.score))
+	def add_player(self, player):	
 		self.players.append(player)
 
 	def check_match(self, a, b):
@@ -86,8 +85,8 @@ class Pool:
 					self.players = self.players[:i] + self.players[i + 3:]
 					flag = True
 					break
-				if not flag:
-					break
+			if not flag:
+				break
 
 		self.increase_waiting_time()
 
